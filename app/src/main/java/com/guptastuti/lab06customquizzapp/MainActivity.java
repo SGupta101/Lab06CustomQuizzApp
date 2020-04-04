@@ -1,6 +1,8 @@
 package com.guptastuti.lab06customquizzapp;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -23,14 +25,15 @@ public class MainActivity extends AppCompatActivity {
     private boolean mTimerRunning;
 
     private long mTimeLeftInMillis;
-
     private long mEndTime;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.my_countdown_layout);
+        setContentView(R.layout.activity_main);
+
         mTextViewCountDown = findViewById(R.id.text_view_countdown);
+
         mButtonStartPause = findViewById(R.id.button_start_pause);
         mButtonReset = findViewById(R.id.button_reset);
 
@@ -51,7 +54,11 @@ public class MainActivity extends AppCompatActivity {
                 resetTimer();
             }
         });
-
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        FragmentOne fragmentOne = new FragmentOne();
+        fragmentTransaction.add(R.id.container, fragmentOne);
+        fragmentTransaction.commit();
 
     }
 
@@ -129,6 +136,9 @@ public class MainActivity extends AppCompatActivity {
         editor.putLong("endTime", mEndTime);
 
         editor.apply();
+        if (mCountDownTimer != null){
+            mCountDownTimer.cancel();
+        }
     }
 
     @Override
