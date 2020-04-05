@@ -11,6 +11,11 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.google.gson.Gson;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.Locale;
 
 public class MainActivity extends AppCompatActivity {
@@ -27,6 +32,12 @@ public class MainActivity extends AppCompatActivity {
     private long mTimeLeftInMillis;
     private long mEndTime;
 
+    Gson gson = new Gson();
+    Information information = new Information("Timer App", "Hello! Click start to begin. Use reset to restart from 10 minutes.");
+    String json = gson.toJson(information);
+    String name, instructions;
+    TextView informationName, informationInstructions;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -36,6 +47,8 @@ public class MainActivity extends AppCompatActivity {
 
         mButtonStartPause = findViewById(R.id.button_start_pause);
         mButtonReset = findViewById(R.id.button_reset);
+
+
 
         mButtonStartPause.setOnClickListener(new View.OnClickListener(){
             @Override
@@ -54,11 +67,28 @@ public class MainActivity extends AppCompatActivity {
                 resetTimer();
             }
         });
+
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         FragmentOne fragmentOne = new FragmentOne();
         fragmentTransaction.add(R.id.container, fragmentOne);
         fragmentTransaction.commit();
+
+        informationName = (TextView) findViewById(R.id.name);
+        informationInstructions = (TextView) findViewById(R.id.instructions);
+
+        try {
+            JSONObject obj = new JSONObject(json);
+            JSONObject information = obj.getJSONObject("information");
+            name = information.getString("name");
+            instructions = information.getString("instructions");
+            informationName.setText(name);
+            informationInstructions.setText(instructions);
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
 
     }
 

@@ -7,6 +7,22 @@
     android:background="@color/ActivityColor"
     tools:context=".MainActivity">
 
+    
+    <TextView
+        android:id="@+id/name"
+        android:layout_width="300dp"
+        android:layout_height="75dp"
+        android:layout_centerHorizontal="true"
+        />
+
+    <TextView
+        android:id="@+id/instructions"
+        android:layout_width="300dp"
+        android:layout_height="200dp"
+        android:layout_centerHorizontal="true"
+        android:layout_above="@id/text_view_countdown"
+        />
+    
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
