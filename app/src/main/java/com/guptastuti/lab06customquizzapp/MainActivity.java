@@ -7,6 +7,7 @@ import androidx.fragment.app.FragmentTransaction;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.CountDownTimer;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -21,7 +22,7 @@ import java.util.Locale;
 public class MainActivity extends AppCompatActivity {
     private static final long START_TIME_IN_MILLIS = 600000;
 
-    private TextView mTextViewCountDown;
+    private TextView mTextViewCountDown, informationName, informationInstructions;
     private Button mButtonStartPause;
     private Button mButtonReset;
 
@@ -36,18 +37,19 @@ public class MainActivity extends AppCompatActivity {
     Information information = new Information("Timer App", "Hello! Click start to begin. Use reset to restart from 10 minutes.");
     String json = gson.toJson(information);
     String name, instructions;
-    TextView informationName, informationInstructions;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        Log.d("hello", json);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
+        Log.d("hello", "this is my message");
         mTextViewCountDown = findViewById(R.id.text_view_countdown);
+        informationName = findViewById(R.id.name);
+        informationInstructions = findViewById(R.id.instructions);
 
         mButtonStartPause = findViewById(R.id.button_start_pause);
         mButtonReset = findViewById(R.id.button_reset);
-
 
 
         mButtonStartPause.setOnClickListener(new View.OnClickListener(){
@@ -74,18 +76,22 @@ public class MainActivity extends AppCompatActivity {
         fragmentTransaction.add(R.id.container, fragmentOne);
         fragmentTransaction.commit();
 
-        informationName = (TextView) findViewById(R.id.name);
-        informationInstructions = (TextView) findViewById(R.id.instructions);
 
         try {
+            Log.d("hello", "second message");
             JSONObject obj = new JSONObject(json);
-            JSONObject information = obj.getJSONObject("information");
-            name = information.getString("name");
-            instructions = information.getString("instructions");
+            Log.d("hello", "third message");
+            instructions = obj.getString("instructions");
+            Log.d("hello", "fourth message");
+            name = obj.getString("name");
+            Log.d("hello", "fifth message");
+            Log.d("hello", name);
+            Log.i("instructions", instructions);
             informationName.setText(name);
             informationInstructions.setText(instructions);
 
         } catch (JSONException e) {
+            Log.d("hello", "error");
             e.printStackTrace();
         }
 
